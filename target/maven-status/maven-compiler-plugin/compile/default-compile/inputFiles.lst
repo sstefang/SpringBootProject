@@ -1,1 +1,9 @@
-/Users/stefangheti/IdeaProjects/SpringBootProject/src/main/java/model/User.java
+/Users/stefangheti/IdeaProjects/SpringBootProject/src/main/java/com/app/controller/AuthController.java
+/Users/stefangheti/IdeaProjects/SpringBootProject/src/main/java/service/UserService.java
+/Users/stefangheti/IdeaProjects/SpringBootProject/src/main/java/com/app/SpringBootProject.java
+/Users/stefangheti/IdeaProjects/SpringBootProject/src/main/java/com/app/repository/RoleRepository.java
+/Users/stefangheti/IdeaProjects/SpringBootProject/src/main/java/com/app/model/User.java
+/Users/stefangheti/IdeaProjects/SpringBootProject/src/main/java/com/app/repository/UserRepository.java
+/Users/stefangheti/IdeaProjects/SpringBootProject/src/main/java/com/app/WebSecurityConfig.java
+/Users/stefangheti/IdeaProjects/SpringBootProject/src/main/java/service/details/UserDetailsServiceImpl.java
+/Users/stefangheti/IdeaProjects/SpringBootProject/src/main/java/com/app/model/Role.java

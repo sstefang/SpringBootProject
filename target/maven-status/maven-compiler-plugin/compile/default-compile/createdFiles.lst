@@ -1,0 +1,9 @@
+com/app/repository/UserRepository.class
+com/app/WebSecurityConfig.class
+com/app/controller/AuthController.class
+com/app/model/User.class
+com/app/repository/RoleRepository.class
+service/details/UserDetailsServiceImpl.class
+service/UserService.class
+com/app/SpringBootProject.class
+com/app/model/Role.class
