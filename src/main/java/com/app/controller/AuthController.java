@@ -1,74 +1,64 @@
 package com.app.controller;
 
 import com.app.model.User;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
+import com.app.service.SecurityService;
 import com.app.service.UserService;
-
-import javax.validation.Valid;
+import com.app.validator.ValidatorImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class AuthController {
 
     private UserService userService;
+    private SecurityService securityService;
+    private ValidatorImpl userValidator;
 
-    public AuthController(UserService userService) {
+    @Autowired
+    public AuthController(UserService userService, SecurityService securityService, ValidatorImpl userValidator) {
         this.userService = userService;
+        this.securityService = securityService;
+        this.userValidator = userValidator;
     }
 
-    @GetMapping(value = {"/", "/login"})
-    public ModelAndView login() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("login");
-        return modelAndView;
+    @GetMapping("/registration")
+    public String registration(Model model) {
+        model.addAttribute("userForm", new User());
+
+        return "registration";
     }
 
+    @PostMapping("/registration")
+    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
+        userValidator.validate(userForm, bindingResult);
 
-    @GetMapping(value = "/registration")
-    public ModelAndView registration() {
-        ModelAndView modelAndView = new ModelAndView();
-        User user = new User();
-        modelAndView.addObject("user", user);
-        modelAndView.setViewName("registration");
-        return modelAndView;
-    }
-
-    @PostMapping(value = "/registration")
-    public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
-        ModelAndView modelAndView = new ModelAndView();
-        User userExists = userService.findUserByUserName(user.getUserName());
-        if (userExists != null) {
-            bindingResult
-                    .rejectValue("userName", "error.user",
-                            "There is already a user registered with the user name provided");
-        }
         if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("registration");
-        } else {
-            userService.saveUser(user);
-            modelAndView.addObject("successMessage", "User has been registered successfully");
-            modelAndView.addObject("user", new User());
-            modelAndView.setViewName("registration");
-
+            return "registration";
         }
-        return modelAndView;
+
+        userService.save(userForm);
+
+        securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
+
+        return "redirect:/welcome";
     }
 
-    @GetMapping(value = "/admin/home")
-    public ModelAndView home() {
-        ModelAndView modelAndView = new ModelAndView();
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByUserName(auth.getName());
-        modelAndView.addObject("userName", "Welcome " + user.getUserName() + "/" + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
-        modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
-        modelAndView.setViewName("admin/home");
-        return modelAndView;
+    @GetMapping("/login")
+    public String login(Model model, String error, String logout) {
+        if (error != null)
+            model.addAttribute("error", "Your username and password is invalid.");
+
+        if (logout != null)
+            model.addAttribute("message", "You have been logged out successfully.");
+
+        return "login";
     }
 
-
+    @GetMapping({"/", "/welcome"})
+    public String welcome(Model model) {
+        return "welcome";
+    }
 }
