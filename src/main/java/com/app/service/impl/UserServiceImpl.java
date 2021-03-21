@@ -1,5 +1,6 @@
 package com.app.service.impl;
 
+import com.app.exceptions.UsernameAlreadyExistingException;
 import com.app.model.User;
 import com.app.repository.RoleRepository;
 import com.app.repository.UserRepository;
@@ -35,7 +36,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(User user) {
+    public void save(User user) throws UsernameAlreadyExistingException {
+        if (userRepository.findByUsername(user.getUsername())!=null) {
+            throw new UsernameAlreadyExistingException();
+        }
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.addRole(roleRepository.findByName("user"));
         userRepository.save(user);

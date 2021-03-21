@@ -1,9 +1,13 @@
 package com.app.controller;
 
+import com.app.exceptions.UsernameAlreadyExistingException;
 import com.app.model.User;
 import com.app.service.SecurityService;
 import com.app.service.UserService;
+import com.app.service.impl.SecurityServiceImpl;
 import com.app.validator.ValidatorImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +20,8 @@ public class AuthController {
     private UserService userService;
     private SecurityService securityService;
     private ValidatorImpl userValidator;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     public AuthController(UserService userService, SecurityService securityService, ValidatorImpl userValidator) {
@@ -39,7 +45,11 @@ public class AuthController {
             return "registration";
         }
 
-        userService.save(userForm);
+        try {
+            userService.save(userForm);
+        } catch (UsernameAlreadyExistingException e) {
+            LOGGER.error("This user already exists in our DB");
+        }
 
         securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
 
