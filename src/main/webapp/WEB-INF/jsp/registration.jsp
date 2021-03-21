@@ -42,6 +42,22 @@
             </div>
         </spring:bind>
 
+        <spring:bind path="email">
+            <div class="form-group ${status.error ? 'has-error' : ''}">
+                <form:input type="text" path="email" class="form-control"
+                            placeholder="Write Your Email"></form:input>
+                <form:errors path="email"></form:errors>
+            </div>
+        </spring:bind>
+
+        <spring:bind path="age">
+            <div class="form-group ${status.error ? 'has-error' : ''}">
+                <form:input type="text" path="age" class="form-control"
+                            placeholder="Tell us your age"></form:input>
+                <form:errors path="age"></form:errors>
+            </div>
+        </spring:bind>
+
         <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
     </form:form>
 

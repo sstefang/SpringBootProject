@@ -11,8 +11,12 @@ import org.springframework.validation.Validator;
 @Component
 public class ValidatorImpl implements Validator {
 
-    @Autowired
     private UserService userService;
+
+    @Autowired
+    public ValidatorImpl(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -24,7 +28,7 @@ public class ValidatorImpl implements Validator {
         User user = (User) o;
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "FieldNotEmpty");
-        if (user.getUsername().length() < 8 || user.getUsername().length() > 20) {
+        if (user.getUsername().length() < 3 || user.getUsername().length() > 20) {
             errors.rejectValue("username", "Size.userForm.username");
         }
         if (userService.findByUsername(user.getUsername()) != null) {
@@ -39,6 +43,8 @@ public class ValidatorImpl implements Validator {
         if (!user.getPasswordConfirm().equals(user.getPassword())) {
             errors.rejectValue("passwordConfirm", "Diff.userForm.passwordConfirm");
         }
+
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "FieldNotEmpty");
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "age", "FieldNotEmpty");
         if (user.getAge() < 18) {
