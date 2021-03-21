@@ -36,7 +36,7 @@ public class ValidatorImpl implements Validator {
         }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "FieldNotEmpty");
-        if (user.getPassword().length() < 8 || user.getPassword().length() > 20) {
+        if (user.getPassword().length() < 6 || user.getPassword().length() > 20) {
             errors.rejectValue("password", "Size.userForm.password");
         }
 
