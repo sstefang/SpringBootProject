@@ -1,4 +1,4 @@
-# How to run the project?
+# What is the project about?
 The project represents a basic authentication (login application) built with Spring Boot and Spring Security
 
 The following technologies were used building this project:
@@ -11,6 +11,8 @@ The following technologies were used building this project:
 7. JSP
 8. MySQL
 
+
+# How to run the project?
 In order to run the project you will need the following prerequisite
 1. A MySQL DB with 3 tables, user, role, user_roles (for the many to many relationship) defined as existing in project
 2. An admin user (with an admin role)
