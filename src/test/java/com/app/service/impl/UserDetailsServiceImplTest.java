@@ -33,12 +33,10 @@ public class UserDetailsServiceImplTest {
     public void testLoadUserByUsername() {
 
         final User user = new User();
-        user.setId(0L);
         user.setUsername("user2312");
         user.setPassword("user2312");
         user.setPasswordConfirm("user2312");
         final Role role = new Role();
-        role.setId(0L);
         role.setName("user");
         role.setUsers(new HashSet<>(Arrays.asList(new User())));
         user.setRoles(new HashSet<>(Arrays.asList(role)));
@@ -46,15 +44,12 @@ public class UserDetailsServiceImplTest {
         user.setEmail("user2312@email.com");
         when(mockUserRepository.findByUsername("user2312")).thenReturn(user);
 
-        // Run the test
         final UserDetails result = userDetailsServiceImplUnderTest.loadUserByUsername("user2312");
 
-        // Verify the results
     }
 
     @Test(expected = UsernameNotFoundException.class)
     public void testLoadUserByUsername_ThrowsUsernameNotFoundException() {
-
         userDetailsServiceImplUnderTest.loadUserByUsername("username1");
     }
 }

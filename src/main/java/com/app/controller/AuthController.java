@@ -4,7 +4,6 @@ import com.app.exceptions.UsernameAlreadyExistingException;
 import com.app.model.User;
 import com.app.service.SecurityService;
 import com.app.service.UserService;
-import com.app.service.impl.SecurityServiceImpl;
 import com.app.validator.ValidatorImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
