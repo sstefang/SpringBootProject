@@ -40,7 +40,7 @@ public class UserDetailsServiceImplTest {
         role.setName("user");
         role.setUsers(new HashSet<>(Arrays.asList(new User())));
         user.setRoles(new HashSet<>(Arrays.asList(role)));
-        user.setAge(0);
+        user.setAge(20);
         user.setEmail("user2312@email.com");
         when(mockUserRepository.findByUsername("user2312")).thenReturn(user);
 
